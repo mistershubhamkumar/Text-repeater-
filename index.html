@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Repeat Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f06, #ff9f00);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Stylish header */
+        .top-box {
+            width: 100%;
+            background-color: #ffcc00;
+            text-align: center;
+            padding: 10px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .top-box h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            padding: 0;
+            font-weight: normal;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .share-icon {
+            font-size: 1.5rem; /* Adjusted size */
+            cursor: pointer;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            font-size: 1.2rem;
+            width: 100%;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ffcc00;
+            outline: none;
+            background: #333;
+            color: white;
+        }
+
+        button:hover {
+            background: #ffcc00;
+            cursor: pointer;
+        }
+
+        .output-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #444;
+            border-radius: 5px;
+            color: #ffcc00;
+            word-wrap: break-word;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icons img {
+            width: 40px;
+            cursor: pointer;
+        }
+
+        .share-btn {
+            background-color: #ffcc00;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            color: black;
+            cursor: pointer;
+            height: 40px;
+            width: 40px;
+        }
+
+        /* Footer with clickable text */
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #ffcc00;
+        }
+
+        .footer a {
+            color: #ffcc00;
+            margin: 0 15px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ff6600;
+        }
+
+        /* Alert Message Styling */
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Stylish Header -->
+    <div class="top-box">
+        <button class="share-btn" onclick="shareWebsite()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Custom Share Icon" style="width: 24px; height: 24px;">
+        </button>
+        <h1>Text Repeat Generator</h1>
+    </div>
+
+    <div class="container">
+        <h1>Text Repeat Generator</h1>
+
+        <label for="input-text">Enter Text:</label>
+        <input type="text" id="input-text" placeholder="Enter your text here">
+
+        <label for="separator-select">Select Separator:</label>
+        <select id="separator-select">
+            <option value=" ">Space</option>
+            <option value=",">, (Comma)</option>
+            <option value="_">_ (Underscore)</option>
+            <option value="|">| (Pipe)</option>
+            <option value="•">• (Bullet)</option>
+            <option value="∆">∆ (Delta)</option>
+        </select>
+
+        <label for="format-select">Select Format:</label>
+        <select id="format-select">
+            <option value="horizontal">Horizontal</option>
+            <option value="vertical">Vertical</option>
+        </select>
+
+        <label for="repeat-count">Repeat Count:</label>
+        <input type="number" id="repeat-count" placeholder="Enter number of times to repeat" min="1" max="1000" value="10">
+
+        <button onclick="generateText()">Generate Text</button>
+
+        <div class="output-box" id="output-box"></div>
+
+        <button id="copy-btn" onclick="copyText()">Copy Text</button>
+    </div>
+
+    <!-- Alert for exceeding max count -->
+    <div class="alert" id="alert-message">Max repeat count is 1000!</div>
+
+    <!-- Social Media Icons -->
+    <div class="social-icons">
+        <a href="https://wa.me/916260273863" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+        <a href="https://www.instagram.com" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram"></a>
+        <a href="https://www.facebook.com" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook"></a>
+    </div>
+
+    <!-- Footer with clickable text -->
+    <div class="footer">
+        <a href="#">Feedback</a>
+        <a href="#">About</a>
+        <a href="#">Privacy</a>
+    </div>
+
+    <script>
+        function generateText() {
+            const text = document.getElementById('input-text').value;
+            const separator = document.getElementById('separator-select').value;
+            const format = document.getElementById('format-select').value;
+            let repeatCount = document.getElementById('repeat-count').value;
+
+            if (repeatCount > 1000) {
+                // Show alert if repeat count is greater than 1000
+                document.getElementById('alert-message').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('alert-message').style.display = 'none';
+                }, 3000);
+                repeatCount = 1000; // Limit to 1000 if user enters more
+                document.getElementById('repeat-count').value = 1000;
+            }
+
+            let output = '';
+
+            if (format === 'horizontal') {
+                output = Array(parseInt(repeatCount)).fill(text).join(separator + ' '); // Repeat text horizontally with chosen separator + space
+            } else if (format === 'vertical') {
+                output = (text + '<br>').repeat(parseInt(repeatCount)); // Repeat entire text vertically
+            }
+
+            document.getElementById('output-box').innerHTML = output;
+        }
+
+        function copyText() {
+            const text = document.getElementById('output-box').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Text copied to clipboard!");
+            });
+        }
+
+        function shareWebsite() {
+            const shareData = {
+                title: 'Text Repeat Generator',
+                text: 'Check out this amazing Text Repeat Generator!',
+                url: window.location.href
+            };
+
+            // Try sharing via navigator.share (works on mobile devices)
+            if (navigator.share) {
+                navigator.share(shareData).catch((error) => console.log('Error sharing:', error));
+            } else {
+                // Fallback: copy URL if sharing isn't supported
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert("Website URL copied to clipboard!");
+                });
+            }
+        }
+    </script>
